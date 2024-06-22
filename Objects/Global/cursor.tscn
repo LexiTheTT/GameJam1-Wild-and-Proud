@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://q2c2rk4qlif8"]
+
+[ext_resource type="Texture2D" uid="uid://bvsrni7y874ie" path="res://icon.svg" id="1_obq6j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1cuyr"]
+radius = 54.8571
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kr7pw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_obq6j")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="AnimatableBody2D" type="AnimatableBody2D"]
+
+[node name="ClickBox" type="CollisionShape2D" parent="."]
+scale = Vector2(0.109375, 0.109375)
+shape = SubResource("CircleShape2D_1cuyr")
+
+[node name="Cursor" type="Node2D" parent="."]
+
+[node name="Cursor Sprites" type="AnimatedSprite2D" parent="Cursor"]
+scale = Vector2(0.109375, 0.109375)
+sprite_frames = SubResource("SpriteFrames_kr7pw")

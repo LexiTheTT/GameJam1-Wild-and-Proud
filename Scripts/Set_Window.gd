@@ -52,7 +52,7 @@ func _process(delta):
 	monitor = DisplayServer.window_get_current_screen()
 
 func _input(ui_accept):
-	if Input.is_action_just_pressed("F2"):
+	if Input.is_action_just_pressed("F4"):
 		scale_index = (scale_index+1) % scale_array.size()
 		print(scale_index,"  ",scale_array[scale_index])
 		_set_winsize(scale_array[scale_index])

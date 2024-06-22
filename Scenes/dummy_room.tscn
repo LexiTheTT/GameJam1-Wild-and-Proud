@@ -1,18 +1,112 @@
-[gd_scene load_steps=4 format=3 uid="uid://bk8erf5aiciar"]
+[gd_scene load_steps=15 format=3 uid="uid://bk8erf5aiciar"]
 
-[ext_resource type="Texture2D" uid="uid://urywak21882d" path="res://Sprites/Sprite Idea.png" id="1_05ph8"]
-[ext_resource type="Script" path="res://Scenes/KaleControl.gd" id="1_teb0w"]
+[ext_resource type="PackedScene" uid="uid://bikygim1s13jv" path="res://Objects/kale.tscn" id="1_7h6qi"]
+[ext_resource type="Script" path="res://Scripts/FolderStuff.gd" id="1_wc36e"]
+[ext_resource type="PackedScene" uid="uid://q2c2rk4qlif8" path="res://Objects/Global/cursor.tscn" id="2_605au"]
+[ext_resource type="Script" path="res://Objects/Global/cursor.gd" id="3_vihou"]
+[ext_resource type="Texture2D" uid="uid://cdr4yrpdjrltd" path="res://Sprites/Platform Template.png" id="4_1536x"]
+[ext_resource type="Texture2D" uid="uid://boaabrrrbglrm" path="res://Sprites/dummygrass.png" id="5_nvplt"]
+[ext_resource type="Script" path="res://Scenes/K_Shadow.gd" id="5_oelp1"]
+[ext_resource type="PackedScene" uid="uid://b7d11u2qj3oiu" path="res://Objects/Editor/folder.tscn" id="7_g24st"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nfrg8"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_bc3oc"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d123q"]
+texture = ExtResource("4_1536x")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -2, 16, -2, 16, 16, -16, 16)
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+0:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, -2, -16, -2)
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_1/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_1/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_1/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rogcx"]
+texture = ExtResource("5_nvplt")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_xo528"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 8
+physics_layer_1/collision_layer = 2
+physics_layer_1/collision_mask = 10
+terrain_set_0/mode = 0
+sources/0 = SubResource("TileSetAtlasSource_d123q")
+sources/1 = SubResource("TileSetAtlasSource_rogcx")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ii5d"]
+size = Vector2(13, 7)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fvefa"]
+size = Vector2(13, 5)
 
 [node name="Dummy Room" type="Node2D"]
 
-[node name="Kale" type="CharacterBody2D" parent="."]
-position = Vector2(197, 45)
-script = ExtResource("1_teb0w")
+[node name="folder" type="Node" parent="."]
+script = ExtResource("1_wc36e")
 
-[node name="K_HitBox" type="CollisionShape2D" parent="Kale"]
-shape = SubResource("RectangleShape2D_nfrg8")
+[node name="Marker" type="StaticBody2D" parent="folder"]
 
-[node name="K_Sprite" type="Sprite2D" parent="Kale"]
-texture = ExtResource("1_05ph8")
+[node name="Colision shape" type="CollisionShape2D" parent="folder/Marker"]
+shape = SubResource("CircleShape2D_bc3oc")
+
+[node name="Cursor" parent="folder" instance=ExtResource("2_605au")]
+script = ExtResource("3_vihou")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_xo528")
+format = 2
+layer_0/name = "Ground"
+layer_0/tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 0, 131072, 1, 0, 131073, 1, 0, 196609, 1, 0, 262145, 1, 0, 327681, 1, 0, 327680, 1, 0, 196608, 1, 0, 262144, 1, 0, 393216, 1, 0, 1, 1, 0, 65537, 1, 0, 393217, 1, 0, 2, 1, 0, 65538, 1, 0, 131074, 1, 0, 196610, 1, 0, 262146, 1, 0, 327682, 1, 0, 393218, 1, 0, 3, 1, 0, 65539, 1, 0, 131075, 1, 0, 196611, 1, 0, 262147, 0, 0, 327683, 1, 0, 393219, 1, 0, 4, 1, 0, 65540, 1, 0, 131076, 1, 0, 196612, 1, 0, 262148, 1, 0, 327684, 1, 0, 393220, 1, 0, 5, 1, 0, 65541, 1, 0, 131077, 1, 0, 196613, 0, 0, 262149, 1, 0, 327685, 1, 0, 393221, 1, 0, 6, 1, 0, 65542, 1, 0, 131078, 1, 0, 196614, 1, 0, 262150, 1, 0, 327686, 1, 0, 393222, 1, 0, 7, 1, 0, 65543, 1, 0, 131079, 1, 0, 196615, 1, 0, 262151, 1, 0, 327687, 1, 0, 393223, 1, 0)
+layer_1/name = "Wall"
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Top"
+layer_2/z_index = 2
+layer_2/tile_data = PackedInt32Array()
+
+[node name="PlatformTemplate" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(85, 117)
+texture = ExtResource("4_1536x")
+
+[node name="K_Shadow" type="Area2D" parent="."]
+script = ExtResource("5_oelp1")
+
+[node name="K_shadhitbox" type="CollisionShape2D" parent="K_Shadow"]
+shape = SubResource("RectangleShape2D_7ii5d")
+
+[node name="K_ShadowSprite" type="Sprite2D" parent="K_Shadow/K_shadhitbox"]
+texture = SubResource("PlaceholderTexture2D_fvefa")
+
+[node name="Kale" parent="K_Shadow" node_paths=PackedStringArray("K_Focus") instance=ExtResource("1_7h6qi")]
+z_index = 2
+y_sort_enabled = true
+collision_layer = 3
+K_Focus = NodePath("../../folder/Cursor")
+
+[node name="Folder" parent="." instance=ExtResource("7_g24st")]
+
+[connection signal="input_event" from="folder/Cursor" to="folder/Cursor" method="_on_input_event"]

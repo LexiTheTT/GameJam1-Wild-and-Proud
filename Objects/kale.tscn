@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bikygim1s13jv"]
+
+[ext_resource type="Script" path="res://Scripts/KaleControl.gd" id="1_yibma"]
+[ext_resource type="Texture2D" uid="uid://urywak21882d" path="res://Sprites/Sprite Idea.png" id="2_hvfg3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nfrg8"]
+size = Vector2(13, 7)
+
+[node name="Kale" type="CharacterBody2D"]
+script = ExtResource("1_yibma")
+
+[node name="K_HitBox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_nfrg8")
+
+[node name="K_Sprite" type="Sprite2D" parent="K_HitBox"]
+texture = ExtResource("2_hvfg3")
+offset = Vector2(0, -20)
