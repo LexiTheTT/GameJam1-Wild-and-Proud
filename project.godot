@@ -11,9 +11,24 @@ config_version=5
 [application]
 
 config/name="GameJam"
+run/main_scene="res://Scenes/dummy_room.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SetWindow="*res://Scripts/Set_Window.gd"
+
+[display]
+
+window/size/viewport_width=256
+window/size/viewport_height=224
+window/stretch/mode="canvas_items"
+window/stretch/scale_mode="integer"
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+textures/decals/filter=0
+textures/light_projectors/filter=0
