@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://bikygim1s13jv" path="res://Objects/kale.tscn" id="1_7h6qi"]
 [ext_resource type="Script" path="res://Scripts/FolderStuff.gd" id="1_wc36e"]
 [ext_resource type="PackedScene" uid="uid://q2c2rk4qlif8" path="res://Objects/Global/cursor.tscn" id="2_605au"]
-[ext_resource type="Script" path="res://Objects/Global/cursor.gd" id="3_vihou"]
+[ext_resource type="Script" path="res://Scripts/cursor.gd" id="3_vihou"]
 [ext_resource type="Texture2D" uid="uid://cdr4yrpdjrltd" path="res://Sprites/Platform Template.png" id="4_1536x"]
 [ext_resource type="Texture2D" uid="uid://boaabrrrbglrm" path="res://Sprites/dummygrass.png" id="5_nvplt"]
-[ext_resource type="Script" path="res://Scenes/K_Shadow.gd" id="5_oelp1"]
+[ext_resource type="Script" path="res://Scripts/K_Shadow.gd" id="5_oelp1"]
 [ext_resource type="PackedScene" uid="uid://b7d11u2qj3oiu" path="res://Objects/Editor/folder.tscn" id="7_g24st"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bc3oc"]
@@ -101,11 +101,10 @@ shape = SubResource("RectangleShape2D_7ii5d")
 [node name="K_ShadowSprite" type="Sprite2D" parent="K_Shadow/K_shadhitbox"]
 texture = SubResource("PlaceholderTexture2D_fvefa")
 
-[node name="Kale" parent="K_Shadow" node_paths=PackedStringArray("K_Focus") instance=ExtResource("1_7h6qi")]
+[node name="Kale" parent="K_Shadow" instance=ExtResource("1_7h6qi")]
 z_index = 2
 y_sort_enabled = true
 collision_layer = 3
-K_Focus = NodePath("../../folder/Cursor")
 
 [node name="Folder" parent="." instance=ExtResource("7_g24st")]
 
