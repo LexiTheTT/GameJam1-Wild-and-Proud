@@ -17,12 +17,10 @@ var keepback = 30
 @onready var _active_speed = 0.0
 
 #Collison stuff
-
 var Z = float(0)
 #Fake gravity
 var True_Y = float(0)
 #Counts the State Macine's Update
-
 
 #States go Berrr
 enum KaleStates {
@@ -33,11 +31,11 @@ enum KaleStates {
 var currentState = KaleStates.Idle
 var prevState = str("")
 var UpdateCount = 0
+
 func _ready() -> void:
 	change_state(KaleStates.Move)
 
-
-func _physics_process(delta):
+func _physics_process(_delta):
 	if K_Debug == true:
 		#Here we'll show the debug info that might help a lot.
 		pass
@@ -45,14 +43,14 @@ func _physics_process(delta):
 	# print(_active_speed)
 	# Y floor =
 	#State Machine 2
+	print(self.position)
 	match currentState:
 		KaleStates.Move:
-			_Move()
+			move()
 		KaleStates.Idle:
-			_Idle()
+			idle()
 		KaleStates.Animate_Speical:
 			_Animate_Speical()
-	
 
 func change_state(newState = KaleStates.Idle):
 # A function for changing states.
@@ -64,19 +62,19 @@ func change_state(newState = KaleStates.Idle):
 			if K_Debug == true:
 				print(UpdateCount,":","Prev: ", KaleStates.keys()[prevState], "	|  Current:", KaleStates.keys()[newState])
 
-func _Idle():
+func idle():
 	#Just... hangin' around.
 	pass
 
-func _Move():
+func move():
 	#Moves towards the focus
 	#currently doesn't work. I need to sleep.
+	print("Position: ", self.position)
 	if self.position.distance_to(Focus.position) > keepback:
 		direction = (Focus.position - self.position).normalized()
 		print(direction)
 		velocity = direction * FOLLOWSPEED
 		move_and_slide()
-	pass
 
 func _Animate_Speical():
 	#Ment to animated for various diffrent but uniqe things maybe

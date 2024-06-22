@@ -8,8 +8,9 @@ var mouse_pos = get_global_mouse_position()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	_Go_toMouse()
 	if Input.is_action_just_pressed("left_click"):
 		marker.position = mouse_pos
