@@ -1,17 +1,24 @@
-[gd_scene load_steps=15 format=3 uid="uid://bk8erf5aiciar"]
+[gd_scene load_steps=24 format=3 uid="uid://bk8erf5aiciar"]
 
 [ext_resource type="PackedScene" uid="uid://bikygim1s13jv" path="res://Objects/kale.tscn" id="1_7h6qi"]
 [ext_resource type="Script" path="res://Scripts/FolderStuff.gd" id="1_wc36e"]
 [ext_resource type="PackedScene" uid="uid://q2c2rk4qlif8" path="res://Objects/Global/cursor.tscn" id="2_605au"]
+[ext_resource type="Script" path="res://Scenes/Marker.gd" id="2_b275q"]
+[ext_resource type="Texture2D" uid="uid://d1a858na3xiad" path="res://Sprites/Mouse/Point.png" id="3_pjaek"]
 [ext_resource type="Script" path="res://Scripts/cursor.gd" id="3_vihou"]
 [ext_resource type="Texture2D" uid="uid://cdr4yrpdjrltd" path="res://Sprites/Platform Template.png" id="4_1536x"]
 [ext_resource type="Texture2D" uid="uid://boaabrrrbglrm" path="res://Sprites/dummygrass.png" id="5_nvplt"]
 [ext_resource type="Script" path="res://Scripts/K_Shadow.gd" id="5_oelp1"]
+[ext_resource type="Texture2D" uid="uid://dww5rjsl4asy6" path="res://Sprites/empty.png" id="6_dq02k"]
 [ext_resource type="PackedScene" uid="uid://b7d11u2qj3oiu" path="res://Objects/Editor/folder.tscn" id="7_g24st"]
+[ext_resource type="Texture2D" uid="uid://cbgd0mxxn7yea" path="res://Sprites/Mouse/Cursor4.png" id="7_jnok7"]
+[ext_resource type="Script" path="res://Scenes/TileMap.gd" id="7_um1q4"]
+[ext_resource type="Script" path="res://Scripts/Anchor2d.gd" id="9_34eu7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bc3oc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d123q"]
+resource_name = "Block"
 texture = ExtResource("4_1536x")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
@@ -21,6 +28,7 @@ texture_region_size = Vector2i(32, 32)
 0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_1/angular_velocity = 0.0
 0:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, -2, -16, -2)
+0:0/0/custom_data_0 = 12
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
@@ -38,7 +46,28 @@ texture_region_size = Vector2i(32, 32)
 1:1/0/physics_layer_1/angular_velocity = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rogcx"]
+resource_name = "Grass"
 texture = ExtResource("5_nvplt")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_poh24"]
+resource_name = "empty"
+texture = ExtResource("6_dq02k")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xye1p"]
+texture = ExtResource("7_jnok7")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -53,8 +82,12 @@ physics_layer_0/collision_mask = 8
 physics_layer_1/collision_layer = 2
 physics_layer_1/collision_mask = 10
 terrain_set_0/mode = 0
+custom_data_layer_0/name = "Z_Lvl"
+custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_d123q")
 sources/1 = SubResource("TileSetAtlasSource_rogcx")
+sources/2 = SubResource("TileSetAtlasSource_poh24")
+sources/3 = SubResource("TileSetAtlasSource_xye1p")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7ii5d"]
 size = Vector2(13, 7)
@@ -62,37 +95,44 @@ size = Vector2(13, 7)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fvefa"]
 size = Vector2(13, 5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_op4au"]
+size = Vector2(30, 30)
+
 [node name="Dummy Room" type="Node2D"]
 
 [node name="folder" type="Node" parent="."]
 script = ExtResource("1_wc36e")
 
-[node name="Marker" type="StaticBody2D" parent="folder"]
+[node name="Cursor" parent="folder" instance=ExtResource("2_605au")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_vihou")
 
-[node name="Colision shape" type="CollisionShape2D" parent="folder/Marker"]
+[node name="Marker" type="Area2D" parent="folder"]
+position = Vector2(113, 114)
+script = ExtResource("2_b275q")
+
+[node name="Colision_Shape" type="CollisionShape2D" parent="folder/Marker"]
 shape = SubResource("CircleShape2D_bc3oc")
 
-[node name="Cursor" parent="folder" instance=ExtResource("2_605au")]
-script = ExtResource("3_vihou")
+[node name="Marker_Shape" type="Sprite2D" parent="folder/Marker/Colision_Shape"]
+texture = ExtResource("3_pjaek")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_xo528")
 format = 2
 layer_0/name = "Ground"
-layer_0/tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 0, 131072, 1, 0, 131073, 1, 0, 196609, 1, 0, 262145, 1, 0, 327681, 1, 0, 327680, 1, 0, 196608, 1, 0, 262144, 1, 0, 393216, 1, 0, 1, 1, 0, 65537, 1, 0, 393217, 1, 0, 2, 1, 0, 65538, 1, 0, 131074, 1, 0, 196610, 1, 0, 262146, 1, 0, 327682, 1, 0, 393218, 1, 0, 3, 1, 0, 65539, 1, 0, 131075, 1, 0, 196611, 1, 0, 262147, 0, 0, 327683, 1, 0, 393219, 1, 0, 4, 1, 0, 65540, 1, 0, 131076, 1, 0, 196612, 1, 0, 262148, 1, 0, 327684, 1, 0, 393220, 1, 0, 5, 1, 0, 65541, 1, 0, 131077, 1, 0, 196613, 0, 0, 262149, 1, 0, 327685, 1, 0, 393221, 1, 0, 6, 1, 0, 65542, 1, 0, 131078, 1, 0, 196614, 1, 0, 262150, 1, 0, 327686, 1, 0, 393222, 1, 0, 7, 1, 0, 65543, 1, 0, 131079, 1, 0, 196615, 1, 0, 262151, 1, 0, 327687, 1, 0, 393223, 1, 0)
+layer_0/tile_data = PackedInt32Array(327681, 1, 0, 327680, 1, 0, 393216, 1, 0, 393217, 1, 0, 327682, 1, 0, 393218, 1, 0, 262147, 0, 0, 327683, 1, 0, 393219, 1, 0, 327686, 1, 0, 393222, 1, 0, 327687, 1, 0, 393223, 1, 0, 262150, 0, 0, 262148, 2, 0, 262149, 2, 0)
 layer_1/name = "Wall"
 layer_1/z_index = 1
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Top"
 layer_2/z_index = 2
 layer_2/tile_data = PackedInt32Array()
-
-[node name="PlatformTemplate" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(85, 117)
-texture = ExtResource("4_1536x")
+script = ExtResource("7_um1q4")
 
 [node name="K_Shadow" type="Area2D" parent="."]
+position = Vector2(73, 148)
 script = ExtResource("5_oelp1")
 
 [node name="K_shadhitbox" type="CollisionShape2D" parent="K_Shadow"]
@@ -101,11 +141,26 @@ shape = SubResource("RectangleShape2D_7ii5d")
 [node name="K_ShadowSprite" type="Sprite2D" parent="K_Shadow/K_shadhitbox"]
 texture = SubResource("PlaceholderTexture2D_fvefa")
 
-[node name="Kale" parent="K_Shadow" instance=ExtResource("1_7h6qi")]
+[node name="Kale" parent="K_Shadow" node_paths=PackedStringArray("Focus") instance=ExtResource("1_7h6qi")]
 z_index = 2
 y_sort_enabled = true
 collision_layer = 3
+Focus = NodePath("")
 
 [node name="Folder" parent="." instance=ExtResource("7_g24st")]
 
+[node name="Anchor2d2" type="CharacterBody2D" parent="." node_paths=PackedStringArray("target")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("9_34eu7")
+target = NodePath("../folder/Marker")
+speed = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Anchor2d2"]
+shape = SubResource("RectangleShape2D_op4au")
+debug_color = Color(1, 0.533333, 0.741176, 0.152941)
+
+[node name="Camera2D" type="Camera2D" parent="Anchor2d2"]
+
 [connection signal="input_event" from="folder/Cursor" to="folder/Cursor" method="_on_input_event"]
+[connection signal="body_entered" from="K_Shadow" to="K_Shadow/Kale" method="_on_k_shadow_body_entered"]

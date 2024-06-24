@@ -10,22 +10,31 @@ var direction = Vector2().normalized()
 #
 var FOLLOWSPEED = 50.0
 #
-var keepback = 30
+var keepback = 0
 #How far away should she stop
 #Fucking hate math.
 # How fast Kale will follow the mouse
 @onready var _active_speed = 0.0
 
 #Collison stuff
-var Z = float(0)
 #Fake gravity
-var True_Y = float(0)
+# var On_Ground = true
+# var Z = float(0)
+# var Fake_Y = float(0)
+# var True_Y = (20/Z) + (80/Fake_Y)
 #Counts the State Macine's Update
+### FORGET THIS 2d! INSTEAD
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")/100
+#Her own hitbox
+@onready var K_HitBox = get_node("K_HitBox")
+
 
 #States go Berrr
 enum KaleStates {
 	Idle,
 	Move,
+	Jumping,
+	Falling,
 	Animate_Speical
 }
 var currentState = KaleStates.Idle
@@ -33,24 +42,34 @@ var prevState = str("")
 var UpdateCount = 0
 
 func _ready() -> void:
-	change_state(KaleStates.Move)
+#IF there is no focus, set focus to Marker
+	if Focus == null:
+		Focus = $Marker
 
 func _physics_process(_delta):
 	if K_Debug == true:
-		#Here we'll show the debug info that might help a lot.
-		pass
-	# _active_speed = sqrt((velocity.x**2) / (velocity.y**2))
-	# print(_active_speed)
-	# Y floor =
+		print(velocity.y)
+		
+	velocity.y += (gravity/10)
+
 	#State Machine 2
-	print(self.position)
+	#print(self.position)
 	match currentState:
 		KaleStates.Move:
 			move()
 		KaleStates.Idle:
 			idle()
+		KaleStates.Falling:
+			pass
+		KaleStates.Jumping:
+			pass
 		KaleStates.Animate_Speical:
 			_Animate_Speical()
+
+	if is_on_floor() and !KaleStates.Jumping:
+		velocity.y = 0
+
+	move_and_slide()
 
 func change_state(newState = KaleStates.Idle):
 # A function for changing states.
@@ -69,10 +88,12 @@ func idle():
 func move():
 	#Moves towards the focus
 	#currently doesn't work. I need to sleep.
-	print("Position: ", self.position)
+	if K_Debug:
+		print("Position: ", self.position)
 	if self.position.distance_to(Focus.position) > keepback:
 		direction = (Focus.position - self.position).normalized()
-		print(direction)
+		if K_Debug:
+			print(direction)
 		velocity = direction * FOLLOWSPEED
 		move_and_slide()
 
@@ -83,7 +104,13 @@ func _Animate_Speical():
 
 #collision stuff
 
-func fakeJump():
+func Jump():
 	#overlapping bodies
-	#if TopCol.position.y >= FloorCol.position.y 
+	#if TopCol.position.y >= FloorCol.position.y:
 	pass
+
+
+func _on_k_shadow_body_exited(body:Node2D) -> void:
+	change_state(KaleStates.Jumping)
+
+	pass # Replace with function body.

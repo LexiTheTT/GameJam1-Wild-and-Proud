@@ -1,10 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://bikygim1s13jv"]
+[gd_scene load_steps=7 format=3 uid="uid://bikygim1s13jv"]
 
 [ext_resource type="Script" path="res://Scripts/KaleControl.gd" id="1_yibma"]
-[ext_resource type="Texture2D" uid="uid://urywak21882d" path="res://Sprites/Sprite Idea.png" id="2_hvfg3"]
+[ext_resource type="Texture2D" uid="uid://dbiivhuy2lons" path="res://Sprites/K_Sprites.png" id="2_gaf3u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nfrg8"]
 size = Vector2(13, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6k4n"]
+atlas = ExtResource("2_gaf3u")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i316s"]
+atlas = ExtResource("2_gaf3u")
+region = Rect2(32, 0, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fx310"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6k4n")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i316s")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 5.0
+}]
 
 [node name="Kale" type="CharacterBody2D"]
 script = ExtResource("1_yibma")
@@ -12,6 +39,7 @@ script = ExtResource("1_yibma")
 [node name="K_HitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_nfrg8")
 
-[node name="K_Sprite" type="Sprite2D" parent="K_HitBox"]
-texture = ExtResource("2_hvfg3")
-offset = Vector2(0, -20)
+[node name="K_Sprite" type="AnimatedSprite2D" parent="K_HitBox"]
+sprite_frames = SubResource("SpriteFrames_fx310")
+animation = &"Idle"
+offset = Vector2(0, -16)
