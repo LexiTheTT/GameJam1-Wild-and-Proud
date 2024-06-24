@@ -3,8 +3,7 @@ extends AnimatableBody2D
 @export var Mouse_Debugs = false
 
 @onready var marker = self.get_parent().get_node("Marker")
-var mouse_pos = get_global_mouse_position()
-@onready var Tile_Map = $"../../TileMap"
+@onready var tile_map = $"../../TileMap"
 
 #This exist because I don't trust custom cursors.
 
@@ -17,21 +16,31 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta: float) -> void:
-	_Go_toMouse()
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	self.position = mouse_pos
+	
 	if Input.is_action_just_pressed("left_click"):
+		var tile_coords: Vector2i = tile_map.local_to_map(mouse_pos)
+		var tile_source: int = tile_map.get_cell_source_id(0, tile_coords)
+		print(tile_source)
+		
+		# If the tile is not void, end the function early
+		if tile_source != -1:
+			return
+		
 		#make the pos of the marker the same as mouse
-		marker.set("visible",true)
+		marker.show()
 		marker.position = mouse_pos
 
 	if Input.is_action_just_pressed("right_click"):
 		
 		#Local cords from where the mouse clicked
-		var local_coords = Tile_Map.local_to_map(mouse_pos)
+		var local_coords = tile_map.local_to_map(mouse_pos)
 		#clicked cell's data
-		var clicked_cell = Tile_Map.get_cell_source_id(0,local_coords)
+		var clicked_cell = tile_map.get_cell_source_id(0,local_coords)
 		
 		#We get the tileset
-		var tile_set = Tile_Map.tile_set
+		var tile_set = tile_map.tile_set
 		#Then we get what the fuck we clicked
 		var tile_set_source = tile_set.get_source(clicked_cell)
 		#Tada!! The name!
@@ -40,14 +49,9 @@ func _physics_process(_delta: float) -> void:
 			cell_name = "Nothing"
 		else:
 			cell_name = tile_set_source.resource_name 
-		#Tile_Map.set_cell()
+		#tile_map.set_cell()
 		print(local_coords, "  which is ", clicked_cell, ": ", cell_name)
 
 		if cell_name == "empty" and papers >=1:
 			papers -= 1
 			print("Papers : ", papers)
-	
-#I try to write things so it can logicly be read... but I'm just that goofy.
-func _Go_toMouse():
-	mouse_pos = get_global_mouse_position()
-	self.position = mouse_pos
