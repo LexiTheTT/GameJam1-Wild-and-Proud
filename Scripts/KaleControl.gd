@@ -14,7 +14,7 @@ var keepback = 0
 #How far away should she stop
 #Fucking hate math.
 # How fast Kale will follow the mouse
-@onready var _active_speed = 0.0
+var _active_speed = 0.0
 
 #Collison stuff
 #Fake gravity

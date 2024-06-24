@@ -1,9 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://bk8erf5aiciar"]
+[gd_scene load_steps=23 format=3 uid="uid://bk8erf5aiciar"]
 
 [ext_resource type="PackedScene" uid="uid://bikygim1s13jv" path="res://Objects/kale.tscn" id="1_7h6qi"]
 [ext_resource type="Script" path="res://Scripts/FolderStuff.gd" id="1_wc36e"]
 [ext_resource type="PackedScene" uid="uid://q2c2rk4qlif8" path="res://Objects/Global/cursor.tscn" id="2_605au"]
-[ext_resource type="Script" path="res://Scenes/Marker.gd" id="2_b275q"]
 [ext_resource type="Texture2D" uid="uid://d1a858na3xiad" path="res://Sprites/Mouse/Point.png" id="3_pjaek"]
 [ext_resource type="Script" path="res://Scripts/cursor.gd" id="3_vihou"]
 [ext_resource type="Texture2D" uid="uid://cdr4yrpdjrltd" path="res://Sprites/Platform Template.png" id="4_1536x"]
@@ -110,12 +109,12 @@ script = ExtResource("3_vihou")
 
 [node name="Marker" type="Area2D" parent="folder"]
 position = Vector2(113, 114)
-script = ExtResource("2_b275q")
 
 [node name="Colision_Shape" type="CollisionShape2D" parent="folder/Marker"]
 shape = SubResource("CircleShape2D_bc3oc")
 
 [node name="Marker_Shape" type="Sprite2D" parent="folder/Marker/Colision_Shape"]
+position = Vector2(-1, -16)
 texture = ExtResource("3_pjaek")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -141,11 +140,10 @@ shape = SubResource("RectangleShape2D_7ii5d")
 [node name="K_ShadowSprite" type="Sprite2D" parent="K_Shadow/K_shadhitbox"]
 texture = SubResource("PlaceholderTexture2D_fvefa")
 
-[node name="Kale" parent="K_Shadow" node_paths=PackedStringArray("Focus") instance=ExtResource("1_7h6qi")]
+[node name="Kale" parent="K_Shadow" instance=ExtResource("1_7h6qi")]
 z_index = 2
 y_sort_enabled = true
 collision_layer = 3
-Focus = NodePath("")
 
 [node name="Folder" parent="." instance=ExtResource("7_g24st")]
 
