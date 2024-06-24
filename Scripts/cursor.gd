@@ -30,7 +30,7 @@ func _physics_process(_delta: float) -> void:
 		
 		#make the pos of the marker the same as mouse
 		marker.show()
-		marker.position = mouse_pos
+		marker.position = mouse_pos.snapped(Vector2(16,16))
 
 	if Input.is_action_just_pressed("right_click"):
 		
